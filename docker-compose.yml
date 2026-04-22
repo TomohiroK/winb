@@ -39,6 +39,9 @@ services:
       - ./data:/app/data
       - ./logs:/app/logs
       - ./models:/app/models
+      # config files: mount read-only so tool settings (pytest markers, ruff
+      # rules) reflect host edits without rebuilding the image.
+      - ./pyproject.toml:/app/pyproject.toml:ro
     tty: true
     stdin_open: true
     command: tail -f /dev/null
