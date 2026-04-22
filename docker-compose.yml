@@ -42,6 +42,10 @@ services:
       # config files: mount read-only so tool settings (pytest markers, ruff
       # rules) reflect host edits without rebuilding the image.
       - ./pyproject.toml:/app/pyproject.toml:ro
+      # Alembic migrations: mount read-write so autogenerate can drop new
+      # revision files onto the host filesystem.
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini:ro
     tty: true
     stdin_open: true
     command: tail -f /dev/null
