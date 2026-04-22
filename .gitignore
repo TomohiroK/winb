@@ -1,0 +1,83 @@
+# ==== Python ====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ==== Virtual environments ====
+.venv/
+venv/
+ENV/
+env/
+
+# ==== Credentials / Environment ====
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+serviceAccountKey.json
+*-credentials.json
+
+# ==== Data (do not commit scraped / processed data) ====
+data/raw/
+data/processed/
+data/cache/
+*.db
+*.sqlite
+*.sqlite3
+
+# Specific data formats inside data/
+data/**/*.csv
+data/**/*.parquet
+data/**/*.json
+data/**/*.jsonl
+data/**/*.html
+data/**/*.xml
+
+# Keep .gitkeep
+!data/**/.gitkeep
+
+# ==== Models ====
+models/saved/
+*.pkl
+*.joblib
+*.h5
+*.onnx
+!models/saved/.gitkeep
+
+# ==== Logs ====
+logs/
+*.log
+!logs/.gitkeep
+
+# ==== Jupyter ====
+.ipynb_checkpoints/
+notebooks/**/.ipynb_checkpoints/
+
+# ==== OS ====
+.DS_Store
+Thumbs.db
+
+# ==== IDE ====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ==== Docker ====
+docker-compose.override.yml
+.docker/
