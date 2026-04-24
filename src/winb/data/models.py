@@ -14,6 +14,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 
 from sqlalchemy import (
+    BigInteger,
     Boolean,
     CheckConstraint,
     Date,
@@ -83,7 +84,9 @@ class Player(Base, TimestampMixin):
 
     __tablename__ = "players"
 
-    player_id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=False)
+    # PlayerID values observed on bleague.jp exceed 32-bit INTEGER range
+    # (e.g. 5100000012 > 2_147_483_647), so we use BigInteger.
+    player_id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=False)
     name_ja: Mapped[str] = mapped_column(String(100), nullable=False)
     name_en: Mapped[str | None] = mapped_column(String(100))
     birth_date: Mapped[date | None] = mapped_column(Date, index=True)
@@ -113,7 +116,7 @@ class PlayerTeamHistory(Base, TimestampMixin):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     player_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("players.player_id", ondelete="CASCADE"), index=True
+        BigInteger, ForeignKey("players.player_id", ondelete="CASCADE"), index=True
     )
     season: Mapped[str] = mapped_column(String(10), nullable=False, index=True)
     team_id: Mapped[int] = mapped_column(
@@ -223,7 +226,7 @@ class RosterSeasonStat(Base, TimestampMixin):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     player_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("players.player_id", ondelete="CASCADE"), index=True
+        BigInteger, ForeignKey("players.player_id", ondelete="CASCADE"), index=True
     )
     team_id: Mapped[int | None] = mapped_column(
         Integer, ForeignKey("teams.team_id", ondelete="SET NULL"), index=True
@@ -309,7 +312,7 @@ class PlayerBoxScore(Base, TimestampMixin):
         index=True,
     )
     player_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("players.player_id", ondelete="CASCADE"), index=True
+        BigInteger, ForeignKey("players.player_id", ondelete="CASCADE"), index=True
     )
     team_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("teams.team_id", ondelete="CASCADE"), index=True

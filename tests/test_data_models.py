@@ -11,7 +11,6 @@ from datetime import date, datetime, timezone
 import pytest
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session, sessionmaker
 
 from winb.data import (
     Game,
@@ -21,30 +20,7 @@ from winb.data import (
     RosterSeasonStat,
     Team,
     TeamSeasonStat,
-    get_engine,
 )
-
-
-@pytest.fixture
-def session() -> Session:
-    """Per-test session inside a transaction that is rolled back after.
-
-    IntegrityError on flush() auto-rolls the underlying transaction, so we
-    only rollback if it is still active. Otherwise SQLAlchemy emits a
-    "transaction already deassociated" warning.
-    """
-    engine = get_engine()
-    connection = engine.connect()
-    trans = connection.begin()
-    Session_ = sessionmaker(bind=connection, future=True, expire_on_commit=False)
-    s = Session_()
-    try:
-        yield s
-    finally:
-        s.close()
-        if trans.is_active:
-            trans.rollback()
-        connection.close()
 
 
 # --- Team / Player master -------------------------------------------------
